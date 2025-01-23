@@ -1,17 +1,30 @@
-body {
+/* body {
     background-color: #eee;
     border: 0;
     margin: 0;
     font: 1.1em tahoma, arial, sans-serif;
+} */
+
+body {
+    background-color: #e3f2fd;
+    font: 1.1em "Montserrat", sans-serif;
+    color: #1e3a5f;
+    margin: 0;
 }
+
 a {
     color: darkblue;
     transition: color .2s ease-out;
     text-decoration: none
 }
-a:hover {
+/* a:hover {
     color: red;
+} */
+
+a:hover {
+    color: #1565c0;
 }
+
 input {
     display: none;
     font: 1.1em tahoma, arial, sans-serif;
@@ -22,12 +35,31 @@ textarea:focus,
 button:focus {
     outline: none;
 }
-input[type="button"] {
+/* input[type="button"] {
     width: 100px;
     padding: 5px;
     text-align: center;
     display: block;
+} */
+
+input[type="button"] {
+    width: 100px;
+    padding: 5px;
+    background-color: #1e88e5;
+    color: #fff;
+    border: 2px solid #1e88e5;
+    text-align: center;
+    display: block;
+    /* font: 1.1em "Montserrat", sans-serif; */
+    /* border-radius: 10px; */
+    /* cursor: pointer; */
+    /* font-size: 1em; */
+    /* transition: background-color 0.3s ease-in-out, border 0.3s ease-in-out; */
+    /* font-family: "Montserrat", sans-serif; */
+    /* text-transform: uppercase; */
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); */
 }
+
 input[type="button"].big-button {
     width: 90%;
     max-width: 300px;
@@ -42,7 +74,7 @@ p {
 #app {} #app-wrap {} #disconnect {
     width: 150px;
 }
-.diag-box {
+.diag-pox {
     position: absolute;
     top: 0;
     left: 0;
@@ -57,7 +89,8 @@ p {
     left: 10%;
     width: 80%;
     text-align: center;
-    border: 2px outset #888;
+    border: 2px outset #1565c0;; 
+    /* color: #1565c0; */
     background-color: #fff;
     border-radius: 10px;
     top: 20%;
@@ -77,32 +110,64 @@ p {
     cursor: pointer;
 }
 .brdb {
-    border-bottom: 1px solid #888;
+    border-bottom: 1px solid #1565c0;;
 }
 header {
-    background-color: #fff;
-    border-bottom: 1px solid #888;
+    background-color: #1e88e5;
+    border-bottom: 1px solid #1565c0;
+    /* font-size: 1.4em; */
+    color: #fff;
+    text-align: center;
 }
-section {
+
+/* header {
+    background-color: #1e88e5;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+    font-size: 1.4em;
+    border-bottom: 4px solid #1565c0;
+    border-radius: 0 0 10px 10px;
+} */
+
+/* section {
     background-color: #fff;
     border-bottom: 1px solid #888;
     border-top: 1px solid #888;
+} */
+
+section {
+    background-color: #fff;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(30, 58, 95, 0.1);
+    max-width: 600px;
 }
+
 h1 {
     display: block;
     text-align: center;
     margin: 0;
     padding: 15px;
-    font-size: 1.4em
+    text-align: center;
+    /* font-size: 1.4em */
 }
-h2 {
+/* h2 {
     margin: 0;
     margin-top: 20px;
     padding: 10px;
     text-transform: uppercase;
     color: #888;
     font-size: 1.0em
+} */
+
+h2 {
+    color: #1e3a5f;
+    border-left: 5px solid #1e88e5;
+    padding-left: 10px;
 }
+
 h3 {
     margin: 0;
     text-align: center;
