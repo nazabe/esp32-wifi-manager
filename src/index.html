@@ -1,138 +1,154 @@
 <!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="utf-3"/>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-		<meta name="apple-mobile-web-app-capable" content="yes" />
-		<link rel="stylesheet" href="style.css">
-		<script async src="code.js"></script>
-		<title>esp32-wifi-manager</title>
-	</head>
-	<body>
-		<div id="app">
-			<div id="app-wrap">
-				<div id="wifi">
-					<header>
-						<h1>Wi-Fi</h1>
-					</header>
-					<div id="wifi-status">
-						<h2>Connected to:</h2>
-						<section id="connected-to">
-							<div class="ape"><div class="w0"><div class="pw"><span></span></div></div></div>
-						</section>
-					</div>
-					<h2>Manual connect</h2>
-					<section id="manual_add">
-					<div class="ape">ADD (HIDDEN) SSID<div>
-					</section>
-					<h2>or choose a network...</h2>
-					<section id="wifi-list">
-					</section>
-					<div id="pwrdby"><em>Powered by </em><a id="acredits" href="#"><strong>esp32-wifi-manager</strong></a>.</div>
-				</div>
-				<div id="connect_manual">
-					<header>
-						<h1>Enter Details</h1>
-					</header>
-					<h2>Manual Connection</span></h2>
-					<section>
-						<input id="manual_ssid" type="text" placeholder="SSID" value="">
-						<input id="manual_pwd" type="password" placeholder="Password" value="">
-					</section>
-					<div class="buttons">
-							<input id="manual_togglepwd" class="big-button" type="button" value="Show password" /><br>
-							<input id="manual_join" type="button" value="Join" data-connect="manual" />
-							<input id="manual_cancel" type="button" value="Cancel"/>
-					</div>
-				</div>
-				<div id="connect">
-					<header>
-						<h1>Enter Password</h1>
-					</header>
-					<h2>Password for <span id="ssid-pwd"></span></h2>
-					<section>
-						<input id="pwd" type="password" placeholder="Password" value="">
-					</section>
-					<div class="buttons">
-							<input id="togglepwd" class="big-button" type="button" value="Show password" /><br>
-							<input id="join" type="button" value="Join" />
-							<input id="cancel" type="button" value="Cancel"/>
-					</div>
-				</div>
-				<div id="connect-wait">
-					<header>
-						<h1>Please wait...</h1>
-					</header>
-					<h2>Connecting to <span id="ssid-wait"></span></h2>
-					<section>
-						<div id="loading">
-							<div class="spinner"><div class="double-bounce1"></div><div class="double-bounce2"></div></div>
-							<p class="tctr">You may lose wifi access while the esp32 recalibrates its radio. Please wait until your device automatically reconnects. This can take up to 30s.</p>
-						</div>
-						<div id="connect-success">
-							<h3 class="gr">Success!</h3>
-						</div>
-						<div id="connect-fail">
-							<h3 class="rd">Connection failed</h3>
-							<p class="tctr">Please double-check wifi password if any and make sure the access point has good signal.</p>
-						</div>
-					</section>
-					<div class="buttons">
-						<input id="ok-connect" type="button" value="OK" class="ctr" />
-					</div>
-				</div>
-				<div id="connect-details">
-					<div id="connect-details-wrap">
-						<header>
-							<h1></h1>
-						</header>
-						<h2></h2>
-						<section>
-							<div class="buttons">
-								<input id="disconnect" type="button" value="Disconnect" class="ctr"/>
-							</div>
-						</section>
-						<h2>IP Address</h2>
-						<section>
-							<div class="ape brdb">IP Address:<div id="ip" class="fr"></div></div>
-							<div class="ape brdb">Subnet Mask:<div id="netmask" class="fr"></div></div>
-							<div class="ape">Default Gateway:<div id="gw" class="fr"></div></div>
-						</section>
-						<div class="buttons">
-							<input id="ok-details" type="button" value="OK" class="ctr" />
-						</div>
-					</div>					
-					<div id="diag-disconnect" class="diag-box">
-						<div class="diag-box-win">
-							<p>Are you sure you would like to disconnect from this wifi?</p>
-							<div class="buttons">
-								<input id="no-disconnect" type="button" value="No" />
-								<input id="yes-disconnect" type="button" value="Yes" />
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div id="credits">
-			<header>
-				<h1>About this app...</h1>
-			</header>
-			<h2></h2>
-			<section>
-				<p><strong>esp32-wifi-manager</strong>, &copy; 2017-2020, Tony Pottier<br />Licended under the MIT License.</p>
-				<p>
-					This app would not be possible without the following libraries:
-				</p>
-				<ul>
-					<li>SpinKit, &copy;  2015, Tobias Ahlin. Licensed under the MIT License.</li>
-					<li>jQuery, The jQuery Foundation. Licensed under the MIT License.</li>
-					<li>cJSON, &copy; 2009-2017, Dave Gamble and cJSON contributors. Licensed under the MIT License.</li>
-				</ul>
-			</section>
-			<div class="buttons">
-				<input id="ok-credits" type="button" value="OK" class="ctr" />
-			</div>
-		</div>
-	</body>
-<html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>ESP32 WiFi Manager</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Carga de fuentes desde Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+    <script async src="code.js"></script>
+</head>
+<body>
+
+    <main id="app">
+
+        <!-- Vista Principal: Lista de Redes -->
+        <div id="wifi" class="view">
+            <div class="card">
+                <header>
+                    <h1>Configuración Wi-Fi</h1>
+                </header>
+                <div class="card-body">
+                    <div id="wifi-status" class="wifi-status-connected">
+                        <h2>Conectado a:</h2>
+                        <section id="connected-to">
+                            <!-- El JS insertará aquí la red conectada -->
+                        </section>
+                    </div>
+
+                    <h2>Selecciona una red</h2>
+                    <section id="wifi-list">
+                        <!-- El JS llenará esta lista -->
+                    </section>
+
+                    <h2>O añade una red oculta</h2>
+                    <section id="manual_add" class="wifi-list-item">
+                        Añadir red manualmente (SSID oculto)
+                    </section>
+                </div>
+                <footer>
+                    <p><em>Powered by </em><a id="acredits" href="#"><strong>esp32-wifi-manager</strong></a>.</p>
+                </footer>
+            </div>
+        </div>
+
+        <!-- Vista: Conexión Manual -->
+        <div id="connect_manual" class="view" style="display:none;">
+            <div class="card">
+                <header>
+                    <h1>Conexión Manual</h1>
+                </header>
+                <form class="card-body" onsubmit="return false;">
+                    <h2>Introduce los datos de la red</h2>
+                    <div class="form-group">
+                        <input id="manual_ssid" type="text" class="form-control" placeholder="Nombre de la red (SSID)">
+                    </div>
+                    <div class="form-group">
+                        <input id="manual_pwd" type="password" class="form-control" placeholder="Contraseña">
+                    </div>
+                    <div class="form-group">
+                        <input id="manual_togglepwd" class="btn btn-link" type="button" value="Mostrar contraseña">
+                    </div>
+                    <div class="button-group">
+                        <input id="manual_cancel" type="button" value="Cancelar" class="btn btn-secondary">
+                        <input id="manual_join" type="button" value="Conectar" class="btn btn-primary" data-connect="manual">
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Vista: Ingresar Contraseña -->
+        <div id="connect" class="view" style="display:none;">
+            <div class="card">
+                <header>
+                    <h1>Ingresar Contraseña</h1>
+                </header>
+                <form class="card-body" onsubmit="return false;">
+                    <h2>Contraseña para <span id="ssid-pwd"></span></h2>
+                    <div class="form-group">
+                        <input id="pwd" type="password" class="form-control" placeholder="Contraseña">
+                    </div>
+                     <div class="form-group">
+                        <input id="togglepwd" class="btn btn-link" type="button" value="Mostrar contraseña">
+                    </div>
+                    <div class="button-group">
+                        <input id="cancel" type="button" value="Cancelar" class="btn btn-secondary">
+                        <input id="join" type="button" value="Conectar" class="btn btn-primary">
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Vista: Esperando Conexión -->
+        <div id="connect-wait" class="view" style="display:none;">
+            <div class="card">
+                <header>
+                    <h1>Conectando...</h1>
+                </header>
+                <div class="card-body text-center">
+                    <h2>Intentando conectar a <span id="ssid-wait"></span></h2>
+                    
+                    <div id="loading">
+                        <div class="spinner"><div class="double-bounce1"></div><div class="double-bounce2"></div></div>
+                        <p>Puedes perder la conexión temporalmente mientras el ESP32 se conecta a la red. Por favor, espera.</p>
+                    </div>
+
+                    <div id="connect-success" style="display:none;">
+                        <h3 class="text-success">¡Conexión exitosa!</h3>
+                    </div>
+
+                    <div id="connect-fail" style="display:none;">
+                        <h3 class="text-danger">Falló la conexión</h3>
+                        <p>Verifica la contraseña y que la señal de la red sea buena.</p>
+                    </div>
+
+                    <div class="button-group-center">
+                        <input id="ok-connect" type="button" value="OK" class="btn btn-primary">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vista: Detalles de Conexión -->
+        <div id="connect-details" class="view" style="display:none;">
+             <div class="card">
+                <header>
+                    <h1 id="details-ssid"></h1>
+                </header>
+                <div class="card-body">
+                    <h2>Detalles de la Conexión</h2>
+                    <div class="connection-details">
+                        <div class="detail-item"><span>Dirección IP</span><strong id="ip"></strong></div>
+                        <div class="detail-item"><span>Máscara de Subred</span><strong id="netmask"></strong></div>
+                        <div class="detail-item"><span>Gateway</span><strong id="gw"></strong></div>
+                    </div>
+                    <div class="button-group-center">
+                        <input id="disconnect" type="button" value="Desconectar" class="btn btn-danger"/>
+                        <input id="ok-details" type="button" value="OK" class="btn btn-secondary"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Conservamos los iconos SVG como datos para no requerir archivos externos -->
+    <style>
+        .w0{background:url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+Cjxzdmcgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxwYXRoIGQ9Ik0xLDlMMywxMUM3Ljk3LDYuMDMgMTYuMDMsNi4wMyAyMSwxMUwyMyw5QzE2LjkzLDIuOTMgNy4wOCwyLjkzIDEsOVoiIHN0eWxlPSJmaWxsOiBibGFjazsiLz4KPHBhdGggZD0iTTUsMTNMNywxNUM5Ljc2LDEyLjI0IDE0LjI0LDEyLjI0IDE3LDE1TDE5LDEzQzE1LjE0LDkuMTQgOC44Nyw5LjE0IDUsMTNaIiBzdHlsZT0iZmlsbDogYmxhY2s7Ii8+CjxwYXRoIGQ9Ik05LDE3TDEyLDIwTDE1LDE3QzEzLjM1LDE1LjM0IDEwLjY2LDE1LjM0IDksMTdaIiBzdHlsZT0iZmlsbDogYmxhY2s7Ii8+Cjwvc3ZnPgo=') no-repeat right top}.w1{background:url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+Cjxzdmcgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxwYXRoIGQ9Ik0xLDlMMywxMUM3Ljk3LDYuMDMgMTYuMDMsNi4wMyAyMSwxMUwyMyw5QzE2LjkzLDIuOTMgNy4wOCwyLjkzIDEsOVoiIHN0eWxlPSJmaWxsOiBncmF5OyIvPgo8cGF0aCBkPSJNNSwxM0w3LDE1QzkuNzYsMTIuMjQgMTQuMjQsMTIuMjQgMTcsMTVMMTksMTNDMTUuMTQsOS4xNCA4Ljg3LDkuMTQgNSwxM1oiIHN0eWxlPSJmaWxsOiBibGFjazsiLz4KPHBhdGggZD0iTTksMTdMMTIsMjBMMTUsMTdDMTMuMzUsMTUuMzQgMTAuNjYsMTUuMzQgOSwxN1daIiBzdHlsZT0iZmlsbDogYmxhYszs7Ii8+Cjwvc3ZnPgo=') no-repeat right top}.w2{background:url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+Cjxzdmcgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxwYXRoIGQ9Ik0xLDlMMywxMUM3Ljk3LDYuMDMgMTYuMDMsNi4wMyAyMSwxMUwyMyw5QzE2LjkzLDIuOTMgNy4wOCwyLjkzIDEsOVoiIHN0eWxlPSJmaWxsOiBncmF5OyIvPgo8cGF0aCBkPSJNNSwxM0w3LDE1QzkuNzYsMTIuMjQgMTQuMjQsMTIuMjQgMTcsMTVMMTksMTNDMTUuMTQsOS4xNCA4Ljg3LDkuMTQgNSwxM1oiIHN0eWxlPSJmaWxsOiBncmF5OyIvPgo8cGF0aCBkPSJNOSwxN0wxMiwyMEwxNSwxN0MxMy4zNSwxNS4zNCAxMC42NiwxNS4zNCA5LDE3WiIgc3R5bGU9ImZpbGw6IGJsYWNrOyIvPgo8L3N2Zz4K') no-repeat right top}.w3{background:url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+Cjxzdmcgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxwYXRoIGQ9Ik0xLDlMMywxMUM3Ljk3LDYuMDMgMTYuMDMsNi4wMyAyMSwxMUwyMyw5QzE2LjkzLDIuOTMgNy4wOCwyLjkzIDEsOVoiIHN0eWxlPSJmaWxsOiBncmF5OyIvPgo8cGF0aCBkPSJNNSwxM0w3LDE1QzkuNzYsMTIuMjQgMTQuMjQsMTIuMjQgMTcsMTVMMTksMTNDMTUuMTQsOS4xNCA4Ljg3LDkuMTQgNSwxM1oiIHN0eWxlPSJmaWxsOiBncmF5OyIvPgo8cGF0aCBkPSJNOSwxN0wxMiwyMEwxNSwxN0MxMy4zNSwxNS4zNCAxMC42NiwxNS4zNCA5LDE3WiIgc3R5bGU9ImZpbGw6IGdyYXk7Ii8+Cjwvc3ZnPgo=') no-repeat right top}.pw{background:url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+Cjxzdmcgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxwYXRoIHN0eWxlPSJmaWxsOiBibGFjazsiIGQ9Ik0xOCA4aC0xVjZjMC0yLjc2LTIuMjQtNS01LTVTNyAzLjI0IDcgNnYySDZjLTEuMSAwLTIgLjktMiAydjEwYzAgMS4xLjkgMiAyIDJoMTJjMS4xIDAgMi0uOSAyLTJWMTBjMC0xLjEtLjktMi0yLTJ6bS02IDljLTEuMSAwLTItLjktMi0ycy45LTIgMi0yIDIgLjkgMiAyLS45IDItMiAyem0zLjEtOUg4LjlWNmMwLTEuNzEgMS4zOS0zLjEgMy4xLTMuMSAxLjcxIDAgMy4xIDEuMzkgMy4xIDMuMXYyeiI+PC9wYXRoPgo8L3N2Zz4=') no-repeat right top}
+    </style>
+</body>
+</html>
