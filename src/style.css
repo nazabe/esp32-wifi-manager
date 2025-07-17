@@ -1,17 +1,30 @@
-/* --- VARIABLES DE COLOR Y CONFIGURACIÓN GLOBAL --- */
+/* --- VARIABLES Y CONFIGURACIÓN GLOBAL (ShadCN/UI Dark Theme) --- */
 :root {
-    --primary-color: #1e88e5; /* Azul principal */
-    --primary-color-dark: #1565c0; /* Azul más oscuro para hover/borders */
-    --background-color: #e3f2fd; /* Fondo celeste muy claro */
-    --card-background: #ffffff; /* Fondo de las tarjetas */
-    --text-color: #1e3a5f; /* Color de texto principal (azul oscuro) */
-    --text-color-light: #64748B; /* Color de texto secundario (gris azulado) */
-    --border-color: #bbdefb; /* Color de borde suave */
-    --danger-color: #d32f2f; /* Rojo para errores/desconectar */
-    --success-color: #388e3c; /* Verde para éxito */
-    --font-family: 'Montserrat', sans-serif;
+    --background: hsl(222.2 84% 4.9%);      /* Negro azulado muy oscuro */
+    --foreground: hsl(210 40% 98%);         /* Texto principal (casi blanco) */
+    
+    --card: hsl(222.2 84% 4.9%);             /* Fondo de la tarjeta, igual al body */
+    --card-foreground: hsl(210 40% 98%);    /* Texto en la tarjeta */
+
+    --primary: hsl(217.2 91.2% 59.8%);       /* Azul brillante para acciones principales */
+    --primary-foreground: hsl(210 40% 98%); /* Texto en botones primarios */
+
+    --secondary: hsl(217.2 32.6% 17.5%);    /* Fondo de botones secundarios */
+    --secondary-foreground: hsl(210 40% 98%);
+
+    --destructive: hsl(0 62.8% 30.6%);      /* Rojo oscuro para acciones destructivas */
+    --destructive-foreground: hsl(0 85.7% 97.3%);
+
+    --muted-foreground: hsl(215 20.2% 65.1%);/* Texto secundario/descripciones */
+    
+    --border: hsl(217.2 32.6% 17.5%);       /* Borde sutil */
+    --input: hsl(217.2 32.6% 17.5%);        /* Fondo de los inputs */
+    --ring: hsl(217.2 91.2% 59.8%);         /* Color del anillo de foco */
+
+    --radius: 0.5rem;                       /* Border-radius para consistencia */
 }
 
+/* --- RESET Y ESTILOS BASE --- */
 *, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
@@ -19,9 +32,9 @@
 }
 
 body {
-    font-family: var(--font-family);
-    background-color: var(--background-color);
-    color: var(--text-color);
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: 'Inter', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -29,218 +42,190 @@ body {
     padding: 1rem;
 }
 
-/* --- ESTILOS DE LA TARJETA PRINCIPAL (CARD) --- */
+/* --- COMPONENTE CARD --- */
 .card {
-    background-color: var(--card-background);
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    overflow: hidden;
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
     width: 100%;
-    max-width: 500px; /* Ancho máximo en móviles */
-    transition: all 0.3s ease-in-out;
+    max-width: 420px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
-.card header {
-    background-color: var(--primary-color);
-    color: white;
-    padding: 1rem 1.5rem;
-    text-align: center;
+.card-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border);
 }
 
-.card-body {
+.card-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.card-description {
+    color: var(--muted-foreground);
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+}
+
+.card-content {
     padding: 1.5rem;
 }
 
-.card footer {
-    background-color: #f7f9fc;
-    padding: 0.75rem 1.5rem;
+.card-footer, .card-footer-actions {
+    padding: 1rem 1.5rem;
+    background-color: hsl(222.2 84% 6.9%);
+    border-top: 1px solid var(--border);
     text-align: center;
     font-size: 0.8rem;
-    color: var(--text-color-light);
+    color: var(--muted-foreground);
 }
 
-/* --- TIPOGRAFÍA --- */
-h1 {
-    font-size: 1.4rem;
-    font-weight: 700;
-}
-
-h2 {
-    font-size: 1.1rem;
-    margin-bottom: 1rem;
-    color: var(--text-color);
-    border-left: 4px solid var(--primary-color);
-    padding-left: 0.75rem;
-}
-
-p {
-    line-height: 1.6;
-    margin-bottom: 1rem;
-}
-
-a {
-    color: var(--primary-color);
-    text-decoration: none;
-    transition: color 0.2s ease;
-}
-
-a:hover {
-    color: var(--primary-color-dark);
+.card-footer-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
 }
 
 /* --- FORMULARIOS --- */
 .form-group {
     margin-bottom: 1.25rem;
 }
-
+.form-group label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
 .form-control {
     display: block;
     width: 100%;
-    padding: 0.75rem 1rem;
+    background-color: var(--input);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.6rem 0.8rem;
     font-size: 1rem;
-    font-family: var(--font-family);
-    color: var(--text-color);
-    background-color: var(--background-color);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    color: var(--foreground);
+    transition: all 0.2s ease;
 }
-
-.form-control:focus {
+.form-control::placeholder {
+    color: var(--muted-foreground);
+}
+.form-control:focus-visible {
     outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.2);
+    box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--ring);
 }
 
 /* --- BOTONES --- */
 .button-group {
     display: flex;
-    justify-content: flex-end; /* Alinea los botones a la derecha */
-    gap: 0.75rem; /* Espacio entre botones */
-    margin-top: 1.5rem;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1rem;
 }
-
 .button-group-center {
     display: flex;
     justify-content: center;
     margin-top: 1.5rem;
 }
-
 .btn {
     display: inline-block;
-    padding: 0.7rem 1.5rem;
-    font-family: var(--font-family);
-    font-size: 0.9rem;
+    padding: 0.6rem 1.25rem;
+    font-size: 0.875rem;
     font-weight: 500;
     text-align: center;
-    border: 2px solid transparent;
-    border-radius: 8px;
+    border: none;
+    border-radius: var(--radius);
     cursor: pointer;
-    transition: all 0.2s ease-in-out;
+    transition: background-color 0.2s ease;
+    width: 100%; /* Hacemos los botones de ancho completo en los grupos */
 }
-
 .btn-primary {
-    background-color: var(--primary-color);
-    color: white;
-    border-color: var(--primary-color);
+    background-color: var(--primary);
+    color: var(--primary-foreground);
 }
 .btn-primary:hover {
-    background-color: var(--primary-color-dark);
-    border-color: var(--primary-color-dark);
-    transform: translateY(-2px);
+    background-color: hsl(217.2 91.2% 65.8%);
 }
-
 .btn-secondary {
-    background-color: transparent;
-    color: var(--text-color-light);
-    border-color: #ced4da;
+    background-color: var(--secondary);
+    color: var(--secondary-foreground);
 }
 .btn-secondary:hover {
-    background-color: #f1f3f5;
-    color: var(--text-color);
+    background-color: hsl(217.2 32.6% 22.5%);
+}
+.btn-destructive {
+    background-color: var(--destructive);
+    color: var(--destructive-foreground);
+}
+.btn-destructive:hover {
+    background-color: hsl(0 62.8% 35.6%);
+}
+.card-footer-actions .btn {
+    flex-grow: 1; /* Para que los botones en el footer ocupen el mismo espacio */
 }
 
-.btn-danger {
-    background-color: var(--danger-color);
-    color: white;
-    border-color: var(--danger-color);
-}
-.btn-danger:hover {
-    background-color: #b71c1c;
-    border-color: #b71c1c;
-}
 
-.btn-link {
-    background: none;
-    border: none;
-    color: var(--primary-color);
-    padding: 0;
-    font-size: 0.9rem;
-    text-align: left;
+/* --- LISTA WIFI --- */
+.content-heading {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+    letter-spacing: 0.5px;
+    margin-bottom: 0.75rem;
 }
-
-/* --- LISTA DE REDES WIFI --- */
-#wifi-list {
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
+.list-container {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
 }
-
-.wifi-list-item {
+.list-item {
     display: flex;
     align-items: center;
-    padding: 0.8rem 1rem;
-    border-bottom: 1px solid var(--border-color);
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
-.wifi-list-item:last-child {
+.list-item:last-child {
     border-bottom: none;
 }
-.wifi-list-item:hover {
-    background-color: var(--background-color);
+.list-item:hover {
+    background-color: var(--secondary);
+}
+.list-item > span { flex-grow: 1; }
+.signal-icon, .pw-icon {
+    height: 20px;
+    width: 20px;
+    margin-left: 0.5rem;
+    opacity: 0.7;
 }
 
-.wifi-list-item span {
-    flex-grow: 1; /* El nombre de la red ocupa el espacio disponible */
-}
-
-/* Clase para el icono de señal, para ser usada por JS */
-.signal-icon {
-    height: 24px;
-    width: 24px;
-    margin-left: 1rem;
-    flex-shrink: 0;
-}
-.pw-icon {
-    height: 24px;
-    width: 24px;
-    background-position: left;
-    flex-shrink: 0;
-}
-
-/* --- ESTADO CONECTADO Y DETALLES --- */
-.wifi-status-connected {
-    margin-bottom: 2rem;
-}
+/* --- DETALLES DE CONEXIÓN Y ESTADO --- */
 .connection-details .detail-item {
     display: flex;
     justify-content: space-between;
-    padding: 0.75rem 0;
-    border-bottom: 1px solid var(--border-color);
+    align-items: center;
+    font-size: 0.9rem;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid var(--border);
 }
-.connection-details .detail-item:last-child {
-    border-bottom: none;
-}
+.connection-details .detail-item:last-child { border: none; }
+.connection-details .detail-item span { color: var(--muted-foreground); }
+
 .text-center { text-align: center; }
-.text-success { color: var(--success-color); }
-.text-danger { color: var(--danger-color); }
+.text-success { color: hsl(142.1 70.6% 45.3%); font-size: 1.2rem; }
+.text-danger { color: hsl(0 72.2% 50.6%); font-size: 1.2rem; }
 
-/* --- SPINNER DE CARGA (Sin cambios, ya era bueno) --- */
-.spinner{width:40px;height:40px;position:relative;margin:30px auto}.double-bounce1,.double-bounce2{width:100%;height:100%;border-radius:50%;background-color:var(--primary-color);opacity:.6;position:absolute;top:0;left:0;-webkit-animation:sk-bounce 2.0s infinite ease-in-out;animation:sk-bounce 2.0s infinite ease-in-out}.double-bounce2{-webkit-animation-delay:-1.0s;animation-delay:-1.0s}@-webkit-keyframes sk-bounce{0%,100%{-webkit-transform:scale(0.0)}50%{-webkit-transform:scale(1.0)}}@keyframes sk-bounce{0%,100%{transform:scale(0.0);-webkit-transform:scale(0.0)}50%{transform:scale(1.0);-webkit-transform:scale(1.0)}}
+/* --- SPINNER DE CARGA --- */
+.spinner{width:40px;height:40px;position:relative;margin:1.5rem auto}.double-bounce1,.double-bounce2{width:100%;height:100%;border-radius:50%;background-color:var(--primary);opacity:.8;position:absolute;top:0;left:0;animation:sk-bounce 2s infinite ease-in-out}.double-bounce2{animation-delay:-1.0s}@keyframes sk-bounce{0%,100%{transform:scale(0.0)}50%{transform:scale(1.0)}}
 
-/* --- RESPONSIVE DESIGN --- */
-@media (min-width: 600px) {
-    .card {
-        max-width: 550px; /* Un poco más de ancho en pantallas grandes */
+/* --- RESPONSIVE --- */
+@media (min-width: 480px) {
+    .btn {
+        width: auto; /* En pantallas más grandes, los botones no ocupan todo el ancho */
+    }
+    .button-group {
+        justify-content: flex-end;
     }
 }
