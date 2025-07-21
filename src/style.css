@@ -179,7 +179,7 @@ body {
     text-transform: uppercase;
     color: var(--muted-foreground);
     letter-spacing: 0.5px;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.60rem;
 }
 
 /* 1. Contenedor principal de la lista */
@@ -196,10 +196,11 @@ body {
     display: flex;
     align-items: center;
     /* Espaciado interno de cada fila */
-    padding: 0.8rem 1rem;
-    border-bottom: 1px solid var(--border);
+    padding: 0.6rem 1rem;
+    border-bottom: none;
     cursor: pointer;
     transition: background-color 0.2s ease-in-out;
+    gap: 0.8rem;
 }
 
 /* Elimina la línea del último elemento para un acabado limpio */
@@ -217,41 +218,51 @@ body {
    - Este div ahora contiene el texto y usa Flexbox para ocupar todo el espacio disponible.
    - El icono de señal se posiciona como un fondo a la DERECHA de este elemento. */
 .ape > div {
-    flex-grow: 1; /* Permite que este elemento ocupe todo el espacio sobrante */
+    flex-grow: 1; 
     background-repeat: no-repeat;
-    background-position: right center; /* ¡Icono a la derecha! */
-    background-size: 20px; /* Tamaño del icono de señal */
-    /* Se añade padding a la derecha para que el texto no se monte sobre el icono de señal */
-    padding-right: 30px; 
+    background-position: left center;
+    background-size: 20px;
+    
+    /* TAREA CORREGIDA: Se elimina este padding que causaba el espacio extra a la derecha */
+    /* padding-right: 30px;  <-- LÍNEA ELIMINADA */
+    
+    gap: 0.6rem;
 }
 
 /* 4. Contenedor del texto del SSID */
 .ape > div > div {
-    /* Color de letra principal de tu tema */
+    flex-grow: 1; /* Ocupa todo el espacio para empujar el candado */
     color: var(--foreground);
     font-weight: 500;
+    
+    /* Para que el texto no se monte sobre el candado, es el contexto de posicionamiento */
+    position: relative; 
+    
+    /* Manejo de texto largo con "..." */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    
+    /* Solución a un bug común de Flexbox para que text-overflow funcione */
+    min-width: 0; 
+    padding-left: 30px; 
 }
 
-/* 5. Estilo para redes seguras (icono de candado) */
-/* Usamos un pseudo-elemento ::before para añadir el candado de forma limpia */
-.pw {
-    display: inline-flex; /* Para alinear el icono y el texto */
-    align-items: center;
-    gap: 0.6rem; /* Espacio entre el candado y el texto */
-}
-
-.pw::before {
+/* 5. ICONO DE CANDADO (para redes seguras con clase .pw) */
+/* Se usa ::after para crear un icono que se puede posicionar libremente */
+.pw::after {
+    /* TAREA 1: Poner el candado a la derecha del todo */
     content: '';
-    display: block;
+    position: absolute; /* Se posiciona relativo al contenedor de texto (.ape > div > div) */
+    right: 0;           /* Lo ancla al borde derecho */
+    top: 50%;           /* Lo centra verticalmente */
+    transform: translateY(-50%);
+    
     width: 14px;
     height: 14px;
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
-    /* Icono de candado con el color de texto secundario de tu tema */
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%239aa7c2'%3E%3Cpath d='M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM8.9 8V6c0-1.71 1.39-3.1 3.1-3.1s3.1 1.39 3.1 3.1v2H8.9z'/%3E%3C/svg%3E");
 }
 
