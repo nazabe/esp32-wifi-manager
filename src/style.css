@@ -69,9 +69,14 @@ body {
     margin-top: 0.5rem;
 }
 
+.card-content-title {
+    padding: 1.5rem;
+    padding-bottom: 0.7rem;
+}
+
 .card-content {
     padding: 1.5rem;
-    padding-top: 1.1rem;
+    padding-top: 0.7rem;
     padding-bottom: 1.1rem;
 }
 
@@ -168,7 +173,6 @@ body {
     flex-grow: 1; /* Para que los botones en el footer ocupen el mismo espacio */
 }
 
-
 /* --- LISTA WIFI --- */
 .content-heading {
     font-size: 0.8rem;
@@ -177,10 +181,80 @@ body {
     letter-spacing: 0.5px;
     margin-bottom: 0.75rem;
 }
+
+/* 1. Contenedor principal de la lista */
 .list-container {
+    /* Fondo transparente para que tome el color del body/card */
+    background-color: transparent;
     border: 1px solid var(--border);
     border-radius: var(--radius);
+    overflow: hidden; /* Importante para que los bordes internos no sobrepasen el radio */
 }
+
+/* 2. Cada elemento individual de la red (la fila completa) */
+.ape {
+    display: flex;
+    align-items: center;
+    /* Espaciado interno de cada fila */
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+/* Elimina la línea del último elemento para un acabado limpio */
+.list-container > .ape:last-child {
+    border-bottom: none;
+}
+
+/* Efecto visual al pasar el cursor, usando tu variable de color secundario */
+.ape:hover {
+    background-color: var(--secondary);
+}
+
+/* 3. Contenedor del icono de señal (clases .w0, .w1, etc.) */
+/* Este es el cambio principal:
+   - Este div ahora contiene el texto y usa Flexbox para ocupar todo el espacio disponible.
+   - El icono de señal se posiciona como un fondo a la DERECHA de este elemento. */
+.ape > div {
+    flex-grow: 1; /* Permite que este elemento ocupe todo el espacio sobrante */
+    background-repeat: no-repeat;
+    background-position: right center; /* ¡Icono a la derecha! */
+    background-size: 20px; /* Tamaño del icono de señal */
+    /* Se añade padding a la derecha para que el texto no se monte sobre el icono de señal */
+    padding-right: 30px; 
+}
+
+/* 4. Contenedor del texto del SSID */
+.ape > div > div {
+    /* Color de letra principal de tu tema */
+    color: var(--foreground);
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 5. Estilo para redes seguras (icono de candado) */
+/* Usamos un pseudo-elemento ::before para añadir el candado de forma limpia */
+.pw {
+    display: inline-flex; /* Para alinear el icono y el texto */
+    align-items: center;
+    gap: 0.6rem; /* Espacio entre el candado y el texto */
+}
+
+.pw::before {
+    content: '';
+    display: block;
+    width: 14px;
+    height: 14px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    /* Icono de candado con el color de texto secundario de tu tema */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%239aa7c2'%3E%3Cpath d='M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM8.9 8V6c0-1.71 1.39-3.1 3.1-3.1s3.1 1.39 3.1 3.1v2H8.9z'/%3E%3C/svg%3E");
+}
+
 .list-item {
     display: flex;
     align-items: center;

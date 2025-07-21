@@ -25,7 +25,7 @@
 					<p class="card-description">Selecciona una red disponible o añade una manualmente.</p>
 				</div>
 
-				<div class="card-content">
+				<div class="card-content-title">
 					<section id="manual_add" class="btn btn-primary">
 						<span>Añadir red manualmente</span>
 					</section>
@@ -154,7 +154,24 @@
 	</main>
 
 	<!-- Iconos y estilos -->
+	<!-- Iconos SVG adaptados al tema oscuro -->
 	<style>
+		.w0 {
+			background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23f8fafc' d='M1,9L3,11C7.97,6.03 16.03,6.03 21,11L23,9C16.93,2.93 7.08,2.93 1,9Z'/%3E%3Cpath fill='%23f8fafc' d='M5,13L7,15C9.76,12.24 14.24,12.24 17,15L19,13C15.14,9.14 8.87,9.14 5,13Z'/%3E%3Cpath fill='%23f8fafc' d='M9,17L12,20L15,17C13.35,15.34 10.66,15.34 9,17Z'/%3E%3C/svg%3E");
+		}
+
+		.w1 {
+			background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%239aa7c2' d='M1,9L3,11C7.97,6.03 16.03,6.03 21,11L23,9C16.93,2.93 7.08,2.93 1,9Z'/%3E%3Cpath fill='%23f8fafc' d='M5,13L7,15C9.76,12.24 14.24,12.24 17,15L19,13C15.14,9.14 8.87,9.14 5,13Z'/%3E%3Cpath fill='%23f8fafc' d='M9,17L12,20L15,17C13.35,15.34 10.66,15.34 9,17Z'/%3E%3C/svg%3E");
+		}
+
+		.w2 {
+			background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%239aa7c2' d='M1,9L3,11C7.97,6.03 16.03,6.03 21,11L23,9C16.93,2.93 7.08,2.93 1,9Z'/%3E%3Cpath fill='%239aa7c2' d='M5,13L7,15C9.76,12.24 14.24,12.24 17,15L19,13C15.14,9.14 8.87,9.14 5,13Z'/%3E%3Cpath fill='%23f8fafc' d='M9,17L12,20L15,17C13.35,15.34 10.66,15.34 9,17Z'/%3E%3C/svg%3E");
+		}
+
+		.w3 {
+			background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%239aa7c2' d='M1,9L3,11C7.97,6.03 16.03,6.03 21,11L23,9C16.93,2.93 7.08,2.93 1,9Z'/%3E%3Cpath fill='%239aa7c2' d='M5,13L7,15C9.76,12.24 14.24,12.24 17,15L19,13C15.14,9.14 8.87,9.14 5,13Z'/%3E%3Cpath fill='%239aa7c2' d='M9,17L12,20L15,17C13.35,15.34 10.66,15.34 9,17Z'/%3E%3C/svg%3E");
+		}
+
 		.w0 {
 			background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+Cjxzdmcgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxwYXRoIGQ9Ik0xLDlMMywxMUM3Ljk3LDYuMDMgMTYuMDMsNi4wMyAyMSwxMUwyMyw5QzE2LjkzLDIuOTMgNy4wOCwyLjkzIDEsOVoiIHN0eWxlPSJmaWxsOiB3aGl0ZTsiLz4KPHBhdGggZD0iTTUsMTNMNywxNUM5Ljc2LDEyLjI0IDE0LjI0LDEyLjI0IDE3LDE1TDE5LDEzQzE1LjE0LDkuMTQgOC44Nyw5LjE0IDUsMTNaIiBzdHlsZT0iZmlsbDogd2hpdGU7Ii8+CjxwYXRoIGQ9Ik05LDE3TDEyLDIwTDE1LDE3QzEzLjM1LDE1LjM0IDEwLjY2LDE1LjM0IDksMTdaIiBzdHlsZT0iZmlsbDogd2hpdGU7Ii8+Cjwvc3ZnPgo=') no-repeat center center
 		}
@@ -188,8 +205,8 @@
 		.password-wrapper .toggle-password-eye-slash {
 			position: absolute;
 			right: 12px;
-			width: 20px;
-			height: 20px;
+			width: 1.4rem;
+			height: 1.4rem;
 			cursor: pointer;
 			background-repeat: no-repeat;
 			background-position: center;
