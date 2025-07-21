@@ -71,6 +71,8 @@ body {
 
 .card-content {
     padding: 1.5rem;
+    padding-top: 1.1rem;
+    padding-bottom: 1.1rem;
 }
 
 .card-footer, .card-footer-actions {
@@ -194,12 +196,12 @@ body {
     background-color: var(--secondary);
 }
 .list-item > span { flex-grow: 1; }
-.signal-icon, .pw-icon {
+/* .signal-icon, .pw-icon {
     height: 20px;
     width: 20px;
     margin-left: 0.5rem;
     opacity: 0.7;
-}
+} */
 
 /* --- DETALLES DE CONEXIÓN Y ESTADO --- */
 .connection-details .detail-item {
@@ -222,9 +224,6 @@ body {
 
 /* --- RESPONSIVE --- */
 @media (min-width: 480px) {
-    .btn {
-        width: auto; /* En pantallas más grandes, los botones no ocupan todo el ancho */
-    }
     .button-group {
         justify-content: flex-end;
     }

@@ -1,140 +1,208 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ESP32 WiFi Manager</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- Usaremos Inter, la fuente por defecto de ShadCN/UI -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-    <script async src="code.js"></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>ESP32 WiFi Manager</title>
+	<link rel="stylesheet" href="style.css">
+	<!-- Usaremos Inter, la fuente por defecto de ShadCN/UI -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+	<script async src="code.js"></script>
 </head>
+
 <body>
 
-    <main id="app">
+	<main id="app">
 
-        <!-- Vista Principal: Lista de Redes -->
-        <div id="wifi" class="view">
-            <div class="card">
-                <div class="card-header">
-                    <h1 class="card-title">Configuración Wi-Fi</h1>
-                    <p class="card-description">Selecciona una red disponible o añade una manualmente.</p>
-                </div>
-                <div class="card-content">
-                    <div id="wifi-status" style="display:none;" class="wifi-status-connected">
-                        <h2 class="content-heading">Conectado a:</h2>
-                        <section id="connected-to"></section>
-                    </div>
-                    <h2 class="content-heading">Redes Disponibles</h2>
-                    <section id="wifi-list" class="list-container"></section>
-                    <section id="manual_add" class="list-item">
-                        <span>Añadir red manualmente</span>
-                    </section>
-                </div>
-                <div class="card-footer">
-                    <p>Powered by <strong>esp32-wifi-manager</strong></p>
-                </div>
-            </div>
-        </div>
+		<!-- Vista Principal: Lista de Redes -->
+		<div id="wifi" class="view">
+			<div class="card">
+				<div class="card-header">
+					<h1 class="card-title">Configuración Wi-Fi</h1>
+					<p class="card-description">Selecciona una red disponible o añade una manualmente.</p>
+				</div>
 
-        <!-- Vista: Conexión Manual -->
-        <div id="connect_manual" class="view" style="display:none;">
-            <div class="card">
-                <div class="card-header">
-                    <h1 class="card-title">Conexión Manual</h1>
-                    <p class="card-description">Introduce el SSID y la contraseña de la red oculta.</p>
-                </div>
-                <form class="card-content" onsubmit="return false;">
-                    <div class="form-group">
-                        <label for="manual_ssid">Nombre de Red (SSID)</label>
-                        <input id="manual_ssid" type="text" class="form-control" placeholder="MiRedOculta">
-                    </div>
-                    <div class="form-group">
-                        <label for="manual_pwd">Contraseña</label>
-                        <input id="manual_pwd" type="password" class="form-control" placeholder="••••••••••">
-                    </div>
-                    <div class="button-group">
-                        <input id="manual_cancel" type="button" value="Cancelar" class="btn btn-secondary">
-                        <input id="manual_join" type="button" value="Conectar" class="btn btn-primary" data-connect="manual">
-                    </div>
-                </form>
-            </div>
-        </div>
+				<div class="card-content">
+					<section id="manual_add" class="btn btn-primary">
+						<span>Añadir red manualmente</span>
+					</section>
+				</div>
 
-        <!-- Vista: Ingresar Contraseña -->
-        <div id="connect" class="view" style="display:none;">
-            <div class="card">
-                <div class="card-header">
-                    <h1 class="card-title">Ingresar Contraseña</h1>
-                    <p class="card-description">Introduce la contraseña para <strong id="ssid-pwd"></strong>.</p>
-                </div>
-                <form class="card-content" onsubmit="return false;">
-                     <div class="form-group">
-                        <label for="pwd">Contraseña</label>
-                        <input id="pwd" type="password" class="form-control" placeholder="••••••••••">
-                    </div>
-                    <div class="button-group">
-                        <input id="cancel" type="button" value="Cancelar" class="btn btn-secondary">
-                        <input id="join" type="button" value="Conectar" class="btn btn-primary">
-                    </div>
-                </form>
-            </div>
-        </div>
+				<div class="card-content">
+					<div id="wifi-status" style="display:none;" class="wifi-status-connected">
+						<h2 class="content-heading">Conectado a:</h2>
+						<section id="connected-to"></section>
+					</div>
+					<h2 class="content-heading">Redes Disponibles</h2>
+					<section id="wifi-list" class="list-container"></section>
+				</div>
 
-        <!-- Vista: Esperando Conexión -->
-        <div id="connect-wait" class="view" style="display:none;">
-            <div class="card">
-                <div class="card-header">
-                     <h1 class="card-title">Conectando...</h1>
-                </div>
-                <div class="card-content text-center">
-                    <div id="loading">
-                        <div class="spinner"><div class="double-bounce1"></div><div class="double-bounce2"></div></div>
-                        <p class="card-description">Conectando a <strong id="ssid-wait"></strong>. Tu dispositivo podría desconectarse temporalmente.</p>
-                    </div>
-                    <div id="connect-success" style="display:none;">
-                        <h3 class="text-success">¡Conexión Exitosa!</h3>
-                        <p class="card-description">Ya estás conectado a la red.</p>
-                    </div>
-                    <div id="connect-fail" style="display:none;">
-                        <h3 class="text-danger">Error de Conexión</h3>
-                        <p class="card-description">No se pudo conectar. Revisa la contraseña e inténtalo de nuevo.</p>
-                    </div>
-                    <div class="button-group-center">
-                        <input id="ok-connect" type="button" value="OK" class="btn btn-primary">
-                    </div>
-                </div>
-            </div>
-        </div>
+				<div class="card-footer">
+					<p>Powered by <strong>esp32-wifi-manager</strong></p>
+					<!-- <div id="pwrdby">Powered by <a id="acredits" href="#"><strong>esp32-wifi-manager</strong></a>.</div> -->
+				</div>
+			</div>
+		</div>
 
-        <!-- Vista: Detalles de Conexión -->
-        <div id="connect-details" class="view" style="display:none;">
-             <div class="card">
-                <div class="card-header">
-                    <h1 class="card-title" id="details-ssid"></h1>
-                    <p class="card-description">Estás conectado a esta red.</p>
-                </div>
-                <div class="card-content">
-                    <div class="connection-details">
-                        <div class="detail-item"><span>Dirección IP</span><strong id="ip"></strong></div>
-                        <div class="detail-item"><span>Máscara de Subred</span><strong id="netmask"></strong></div>
-                        <div class="detail-item"><span>Gateway</span><strong id="gw"></strong></div>
-                    </div>
-                </div>
-                 <div class="card-footer-actions">
-                    <input id="ok-details" type="button" value="Cerrar" class="btn btn-secondary"/>
-                    <input id="disconnect" type="button" value="Desconectar" class="btn btn-destructive"/>
-                </div>
-            </div>
-        </div>
+		<!-- Vista: Conexión Manual -->
+		<div id="connect_manual" class="view" style="display:none;">
+			<div class="card">
+				<div class="card-header">
+					<h1 class="card-title">Conexión Manual</h1>
+					<p class="card-description">Introduce el SSID y la contraseña de la red oculta.</p>
+				</div>
+				<form class="card-content" onsubmit="return false;">
+					<div class="form-group">
+						<label for="manual_ssid">Nombre de Red</label>
+						<input id="manual_ssid" type="text" class="form-control" placeholder="Introduce tu red">
+					</div>
 
-    </main>
-    
-    <!-- Iconos SVG con el `fill` cambiado a 'white' para el modo oscuro -->
-    <style>
-        .w0{background:url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+Cjxzdmcgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxwYXRoIGQ9Ik0xLDlMMywxMUM3Ljk3LDYuMDMgMTYuMDMsNi4wMyAyMSwxMUwyMyw5QzE2LjkzLDIuOTMgNy4wOCwyLjkzIDEsOVoiIHN0eWxlPSJmaWxsOiB3aGl0ZTsiLz4KPHBhdGggZD0iTTUsMTNMNywxNUM5Ljc2LDEyLjI0IDE0LjI0LDEyLjI0IDE3LDE1TDE5LDEzQzE1LjE0LDkuMTQgOC44Nyw5LjE0IDUsMTNaIiBzdHlsZT0iZmlsbDogd2hpdGU7Ii8+CjxwYXRoIGQ9Ik05LDE3TDEyLDIwTDE1LDE3QzEzLjM1LDE1LjM0IDEwLjY2LDE1LjM0IDksMTdaIiBzdHlsZT0iZmlsbDogd2hpdGU7Ii8+Cjwvc3ZnPgo=') no-repeat center center}.w1{background:url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+Cjxzdmcgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxwYXRoIGQ9Ik0xLDlMMywxMUM3Ljk3LDYuMDMgMTYuMDMsNi4wMyAyMSwxMUwyMyw5QzE2LjkzLDIuOTMgNy4wOCwyLjkzIDEsOVoiIHN0eWxlPSJmaWxsOiBncmF5OyIvPgo8cGF0aCBkPSJNNSwxM0w3LDE1QzkuNzYsMTIuMjQgMTQuMjQsMTIuMjQgMTcsMTVMMTksMTNDMTUuMTQsOS4xNCA4Ljg3LDkuMTQgNSwxM1oiIHN0eWxlPSJmaWxsOiB3aGl0ZTsiLz4KPHBhdGggZD0iTTksMTdMMTIsMjBMMTUsMTdDMTMuMzUsMTUuMzQgMTAuNjYsMTUuMzQgOSwxN1daIiBzdHlsZT0iZmlsbDogd2hpdGU7Ii8+Cjwvc3ZnPgo=') no-repeat center center}.w2{background:url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+Cjxzdmcgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxwYXRoIGQ9Ik0xLDlMMywxMUM3Ljk3LDYuMDMgMTYuMDMsNi4wMyAyMSwxMUwyMyw5QzE2LjkzLDIuOTMgNy4wOCwyLjkzIDEsOVoiIHN0eWxlPSJmaWxsOiBncmF5OyIvPgo8cGF0aCBkPSJNNSwxM0w3LDE1QzkuNzYsMTIuMjQgMTQuMjQsMTIuMjQgMTcsMTVMMTksMTNDMTUuMTQsOS4xNCA4Ljg3LDkuMTQgNSwxM1oiIHN0eWxlPSJmaWxsOiBncmF5OyIvPgo8cGF0aCBkPSJNOSwxN0wxMiwyMEwxNSwxN0MxMy4zNSwxNS4zNCAxMC42NiwxNS4zNCA5LDE3WiIgc3R5bGU9ImZpbGw6IHdoaXRlOyIvPgo8L3N2Zz4K') no-repeat center center}.w3{background:url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+Cjxzdmcgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxwYXRoIGQ9Ik0xLDlMMywxMUM3Ljk3LDYuMDMgMTYuMDMsNi4wMyAyMSwxMUwyMyw5QzE2LjkzLDIuOTMgNy4wOCwyLjkzIDEsOVoiIHN0eWxlPSJmaWxsOiBncmF5OyIvPgo8cGF0aCBkPSJNNSwxM0w3LDE1QzkuNzYsMTIuMjQgMTQuMjQsMTIuMjQgMTcsMTVMMTksMTNDMTUuMTQsOS4xNCA4Ljg3LDkuMTQgNSwxM1oiIHN0eWxlPSJmaWxsOiBncmF5OyIvPgo8cGF0aCBkPSJNOSwxN0wxMiwyMEwxNSwxN0MxMy4zNSwxNS4zNCAxMC42NiwxNS4zNCA5LDE3WiIgc3R5bGU9ImZpbGw6IGdyYXk7Ii8+Cjwvc3ZnPgo=') no-repeat center center}.pw{background:url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+Cjxzdmcgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxwYXRoIHN0eWxlPSJmaWxsOiB3aGl0ZTsiIGQ9Ik0xOCA4aC0xVjZjMC0yLjc2LTIuMjQtNS01LTVTNyAzLjI0IDcgNnYySDZjLTEuMSAwLTIgLjktMiAydjEwYzAgMS4xLjkgMiAyIDJoMTJjMS4xIDAgMi0uOSAyLTJWMTBjMC0xLjEtLjktMi0yLTJ6bS02IDljLTEuMSAwLTItLjktMi0ycy45LTIgMi0yIDIgLjkgMiAyLS45IDItMiAyem0zLjEtOUg4LjlWNmMwLTEuNzEgMS4zOS0zLjEgMy4xLTMuMSAxLjcxIDAgMy4xIDEuMzkgMy4xIDMuMXYyeiI+PC9wYXRoPgo8L3N2Zz4=') no-repeat center center}
-    </style>
+					<div class="form-group">
+						<label for="manual_pwd">Contraseña</label>
+						<div class="password-wrapper">
+							<input id="manual_pwd" type="password" class="form-control" placeholder="••••••••••">
+							<span id="manual_toggle_pwd" class="toggle-password-eye"></span>
+						</div>
+					</div>
+
+					<div class="button-group">
+						<input id="manual_cancel" type="button" value="Cancelar" class="btn btn-secondary">
+						<input id="manual_join" type="button" value="Conectar" class="btn btn-primary"
+							data-connect="manual">
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<!-- Vista: Ingresar Contraseña -->
+		<div id="connect" class="view" style="display:none;">
+			<div class="card">
+				<div class="card-header">
+					<h1 class="card-title">Ingresar Contraseña</h1>
+					<p class="card-description">Introduce la contraseña para <strong id="ssid-pwd"></strong>.</p>
+				</div>
+				<form class="card-content" onsubmit="return false;">
+					<div class="form-group">
+						<label for="pwd">Contraseña</label>
+						<div class="password-wrapper">
+							<input id="pwd" type="password" class="form-control" placeholder="••••••••••">
+							<span id="toggle_pwd" class="toggle-password-eye"></span>
+						</div>
+					</div>
+					<div class="button-group">
+						<input id="cancel" type="button" value="Cancelar" class="btn btn-secondary">
+						<input id="join" type="button" value="Conectar" class="btn btn-primary">
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<!-- Vista: Esperando Conexión -->
+		<div id="connect-wait" class="view" style="display:none;">
+			<div class="card">
+				<div class="card-header">
+					<h1 class="card-title">Conectando...</h1>
+				</div>
+				<div class="card-content text-center">
+					<div id="loading">
+						<div class="spinner">
+							<div class="double-bounce1"></div>
+							<div class="double-bounce2"></div>
+						</div>
+						<p class="card-description">Conectando a <strong id="ssid-wait"></strong>. Tu dispositivo podría
+							desconectarse temporalmente.</p>
+					</div>
+					<div id="connect-success" style="display:none;">
+						<h3 class="text-success">¡Conexión Exitosa!</h3>
+						<p class="card-description">Ya estás conectado a la red.</p>
+					</div>
+					<div id="connect-fail" style="display:none;">
+						<h3 class="text-danger">Error de Conexión</h3>
+						<p class="card-description">No se pudo conectar. Revisa la contraseña e inténtalo de nuevo.</p>
+					</div>
+					<div class="button-group-center">
+						<input id="ok-connect" type="button" value="OK" class="btn btn-primary">
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Vista: Detalles de Conexión -->
+		<div id="connect-details" class="view" style="display:none;">
+			<div class="card">
+				<div class="card-header">
+					<h1 class="card-title" id="details-ssid"></h1>
+					<p class="card-description">Estás conectado a esta red.</p>
+				</div>
+				<div class="card-content">
+					<div class="connection-details">
+						<div class="detail-item"><span>Dirección IP</span><strong id="ip"></strong></div>
+						<div class="detail-item"><span>Máscara de Subred</span><strong id="netmask"></strong></div>
+						<div class="detail-item"><span>Gateway</span><strong id="gw"></strong></div>
+					</div>
+				</div>
+				<div class="card-footer-actions">
+					<input id="ok-details" type="button" value="Cerrar" class="btn btn-secondary" />
+					<input id="disconnect" type="button" value="Desconectar" class="btn btn-destructive" />
+				</div>
+			</div>
+		</div>
+
+	</main>
+
+	<!-- Iconos y estilos -->
+	<style>
+		.w0 {
+			background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+Cjxzdmcgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxwYXRoIGQ9Ik0xLDlMMywxMUM3Ljk3LDYuMDMgMTYuMDMsNi4wMyAyMSwxMUwyMyw5QzE2LjkzLDIuOTMgNy4wOCwyLjkzIDEsOVoiIHN0eWxlPSJmaWxsOiB3aGl0ZTsiLz4KPHBhdGggZD0iTTUsMTNMNywxNUM5Ljc2LDEyLjI0IDE0LjI0LDEyLjI0IDE3LDE1TDE5LDEzQzE1LjE0LDkuMTQgOC44Nyw5LjE0IDUsMTNaIiBzdHlsZT0iZmlsbDogd2hpdGU7Ii8+CjxwYXRoIGQ9Ik05LDE3TDEyLDIwTDE1LDE3QzEzLjM1LDE1LjM0IDEwLjY2LDE1LjM0IDksMTdaIiBzdHlsZT0iZmlsbDogd2hpdGU7Ii8+Cjwvc3ZnPgo=') no-repeat center center
+		}
+
+		.w1 {
+			background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+Cjxzdmcgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxwYXRoIGQ9Ik0xLDlMMywxMUM3Ljk3LDYuMDMgMTYuMDMsNi4wMyAyMSwxMUwyMyw5QzE2LjkzLDIuOTMgNy4wOCwyLjkzIDEsOVoiIHN0eWxlPSJmaWxsOiBncmF5OyIvPgo8cGF0aCBkPSJNNSwxM0w3LDE1QzkuNzYsMTIuMjQgMTQuMjQsMTIuMjQgMTcsMTVMMTksMTNDMTUuMTQsOS4xNCA4Ljg3LDkuMTQgNSwxM1oiIHN0eWxlPSJmaWxsOiB3aGl0ZTsiLz4KPHBhdGggZD0iTTksMTdMMTIsMjBMMTUsMTdDMTMuMzUsMTUuMzQgMTAuNjYsMTUuMzQgOSwxN1daIiBzdHlsZT0iZmlsbDogd2hpdGU7Ii8+Cjwvc3ZnPgo=') no-repeat center center
+		}
+
+		.w2 {
+			background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+Cjxzdmcgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxwYXRoIGQ9Ik0xLDlMMywxMUM3Ljk3LDYuMDMgMTYuMDMsNi4wMyAyMSwxMUwyMyw5QzE2LjkzLDIuOTMgNy4wOCwyLjkzIDEsOVoiIHN0eWxlPSJmaWxsOiBncmF5OyIvPgo8cGF0aCBkPSJNNSwxM0w3LDE1QzkuNzYsMTIuMjQgMTQuMjQsMTIuMjQgMTcsMTVMMTksMTNDMTUuMTQsOS4xNCA4Ljg3LDkuMTQgNSwxM1oiIHN0eWxlPSJmaWxsOiBncmF5OyIvPgo8cGF0aCBkPSJNOSwxN0wxMiwyMEwxNSwxN0MxMy4zNSwxNS4zNCAxMC42NiwxNS4zNCA5LDE3WiIgc3R5bGU9ImZpbGw6IHdoaXRlOyIvPgo8L3N2Zz4K') no-repeat center center
+		}
+
+		.w3 {
+			background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+Cjxzdmcgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxwYXRoIGQ9Ik0xLDlMMywxMUM3Ljk3LDYuMDMgMTYuMDMsNi4wMyAyMSwxMUwyMyw5QzE2LjkzLDIuOTMgNy4wOCwyLjkzIDEsOVoiIHN0eWxlPSJmaWxsOiBncmF5OyIvPgo8cGF0aCBkPSJNNSwxM0w3LDE1QzkuNzYsMTIuMjQgMTQuMjQsMTIuMjQgMTcsMTVMMTksMTNDMTUuMTQsOS4xNCA4Ljg3LDkuMTQgNSwxM1oiIHN0eWxlPSJmaWxsOiBncmF5OyIvPgo8cGF0aCBkPSJNOSwxN0wxMiwyMEwxNSwxN0MxMy4zNSwxNS4zNCAxMC42NiwxNS4zNCA5LDE3WiIgc3R5bGU9ImZpbGw6IGdyYXk7Ii8+Cjwvc3ZnPgo=') no-repeat center center
+		}
+
+		/* Estilos para el toggle de contraseña */
+		.password-wrapper {
+			position: relative;
+			display: flex;
+			align-items: center;
+		}
+
+		.password-wrapper .form-control {
+			padding-right: 40px;
+			/* Espacio para el icono */
+			width: 100%;
+		}
+
+		.password-wrapper .toggle-password-eye,
+		.password-wrapper .toggle-password-eye-slash {
+			position: absolute;
+			right: 12px;
+			width: 20px;
+			height: 20px;
+			cursor: pointer;
+			background-repeat: no-repeat;
+			background-position: center;
+		}
+
+		.toggle-password-eye {
+			background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/svg%3E");
+		}
+
+		.toggle-password-eye-slash {
+			background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-10-7-10-7a10.07 10.07 0 0 1 2.06-3.94M12 17.5c-3.04 0-5.5-2.46-5.5-5.5 0-.94.23-1.82.63-2.61m3.24-1.98A5.47 5.47 0 0 1 12 6.5c3.04 0 5.5 2.46 5.5 5.5 0 .23-.01.45-.04.67'/%3E%3Cpath d='m1 1 22 22'/%3E%3C/svg%3E");
+		}
+	</style>
 </body>
+
 </html>
