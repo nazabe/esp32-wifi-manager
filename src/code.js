@@ -39,6 +39,7 @@ function docReady(fn) {
 var selectedSSID = "";
 var refreshAPInterval = null;
 var checkStatusInterval = null;
+var connectionTimeout = null;
 
 function stopCheckStatusInterval() {
   if (checkStatusInterval != null) {
@@ -246,6 +247,20 @@ async function performConnect(conntype) {
   connect_manual_div.style.display = "none";
   connect_wait_div.style.display = "block";
 
+  // --- TIMEOUT ---
+  if (connectionTimeout) {
+    clearTimeout(connectionTimeout);
+  }
+
+  connectionTimeout = setTimeout(() => {
+    console.warn("El intento de conexión excedió el tiempo esperado.");
+    if (gel("loading").style.display === "block") {
+      gel("loading").style.display = "none";
+      gel("connect-fail").style.display = "block";
+      gel("ok-connect").disabled = false;
+    }
+  }, 30000); // 30 seconds
+
   await fetch("connect.json", {
     method: "POST",
     headers: {
@@ -322,6 +337,12 @@ async function checkStatus(url = "status.json") {
     var data = await response.json();
     if (data && data.hasOwnProperty("ssid") && data["ssid"] != "") {
       if (data["ssid"] === selectedSSID && data.hasOwnProperty("urc")) {
+
+        if (connectionTimeout) {
+          clearTimeout(connectionTimeout);
+          connectionTimeout = null;
+        }
+
         // Attempting connection
         switch (data["urc"]) {
           case 0: // STA_CONNECTED
