@@ -26,18 +26,24 @@
 				</div>
 
 				<div class="card-content-top">
-					<section id="manual_add" class="btn btn-primary">
+					<section id="manual_add" class="btn btn-secondary">
 						<span>Añadir red manualmente</span>
 					</section>
 				</div>
 
-				<div class="card-content-bottom">
+				<div class="card-content">
 					<div id="wifi-status" style="display:none;" class="wifi-status-connected">
 						<h2 class="content-heading">Conectado a:</h2>
 						<section id="connected-to"></section>
 					</div>
 					<h2 class="content-heading">Redes Disponibles</h2>
+					
 					<section id="wifi-list" class="list-container"></section>
+
+					<div id="no-networks-found" class="no-networks-container" style="display:none;">
+						<p class="no-networks-text">No se encontraron redes disponibles.</p>
+						<input type="button" id="refresh-wifi-btn" value="Reintentar" class="btn btn-primary">
+					</div>
 				</div>
 
 				<div class="card-footer">

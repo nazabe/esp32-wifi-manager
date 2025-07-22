@@ -246,21 +246,35 @@ function rssiToIcon(rssi) {
 }
 
 async function refreshAP(url = "ap.json") {
-  try {
-    var res = await fetch(url);
-    var access_points = await res.json();
-    if (access_points.length > 0) {
-      //sort by signal strength
-      access_points.sort((a, b) => {
-        var x = a["rssi"];
-        var y = b["rssi"];
-        return x < y ? 1 : x > y ? -1 : 0;
-      });
-      refreshAPHTML(access_points);
+    const wifiListSection = gel("wifi-list");
+    const noNetworksSection = gel("no-networks-found");
+
+    try {
+        const res = await fetch(url);
+        const access_points = await res.json();
+
+        // Si se encuentran redes, muéstralas
+        if (access_points && access_points.length > 0) {
+            wifiListSection.style.display = 'block';
+            noNetworksSection.style.display = 'none';
+            
+            access_points.sort((a, b) => {
+                const x = a["rssi"];
+                const y = b["rssi"];
+                return x < y ? 1 : x > y ? -1 : 0;
+            });
+            refreshAPHTML(access_points);
+        } else {
+            // Si no se encuentran redes, muestra el mensaje de error
+            wifiListSection.style.display = 'none';
+            noNetworksSection.style.display = 'block';
+        }
+    } catch (e) {
+        // Si hay un error en la comunicación, también muestra el mensaje
+        console.info("No se pudo obtener /ap.json o estaba vacío.", e);
+        wifiListSection.style.display = 'none';
+        noNetworksSection.style.display = 'block';
     }
-  } catch (e) {
-    console.info("Access points returned empty from /ap.json!");
-  }
 }
 
 function refreshAPHTML(data) {
