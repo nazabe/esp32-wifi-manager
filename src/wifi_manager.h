@@ -120,7 +120,7 @@ extern "C" {
 #define DEFAULT_AP_PASSWORD 				CONFIG_DEFAULT_AP_PASSWORD
 
 /** @brief Defines the hostname broadcasted by mDNS */
-#define DEFAULT_HOSTNAME					"esp32"
+#define DEFAULT_HOSTNAME					"AirBits Gateway"
 
 /** @brief Defines access point's bandwidth.
  *  Value: WIFI_BW_HT20 for 20 MHz  or  WIFI_BW_HT40 for 40 MHz
