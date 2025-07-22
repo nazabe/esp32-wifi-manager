@@ -484,23 +484,34 @@ body {
 .footer-licenses-link svg {
     stroke: currentColor;
 }
-/* --- Estilos para el estado "Sin Redes" --- */
+
 .no-networks-container {
     text-align: center;
-    padding: 2rem 1rem; /* Añade espacio vertical y horizontal */
-    border: 1px solid var(--border); /* Un borde punteado para diferenciarlo */
+    padding: 2rem 1rem;
+    border: 1px solid var(--border);
     border-radius: var(--radius);
     margin-top: 1rem;
 }
 
 .no-networks-text {
     color: var(--muted-foreground);
-    margin-bottom: 1.25rem; /* Espacio entre el texto y el botón */
+    margin-bottom: 1.25rem;
     font-size: 0.875rem;    
 }
 
-/* Ajustamos el botón para que no ocupe todo el ancho */
 .no-networks-container .btn {
     width: auto;
     min-width: 120px;
+}
+
+.form-error-message {
+    color: var(--destructive);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    background-color: hsla(0, 84%, 60%, 0.1);
+    border: 1px solid var(--destructive);
+    border-radius: var(--radius);
 }

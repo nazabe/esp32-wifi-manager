@@ -4,12 +4,12 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Gateway WiFi Manager</title>
+	<title>Gateway - WiFi Manager</title>
 	<link rel="stylesheet" href="style.css">
-	<!-- Usaremos Inter, la fuente por defecto de ShadCN/UI -->
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+	<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233b82f6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.55a8 8 0 0 1 14 0'%3E%3C/path%3E%3Cpath d='M1.72 9.05a14 14 0 0 1 20.56 0'%3E%3C/path%3E%3Cpath d='M8.53 16.11a3 3 0 0 1 6.95 0'%3E%3C/path%3E%3Ccircle cx='12' cy='20' r='1'%3E%3C/circle%3E%3C/svg%3E">
 	<script async src="code.js"></script>
 </head>
 
@@ -82,6 +82,8 @@
 						</div>
 					</div>
 
+					<div id="manual-connect-error" class="form-error-message" style="display:none;"></div>
+
 					<div class="button-group">
 						<input id="manual_cancel" type="button" value="Cancelar" class="btn btn-secondary">
 						<input id="manual_join" type="button" value="Conectar" class="btn btn-primary"
@@ -106,6 +108,9 @@
 							<span id="toggle_pwd" class="toggle-password-eye"></span>
 						</div>
 					</div>
+
+					<div id="connect-error" class="form-error-message" style="display:none;"></div>
+
 					<div class="button-group">
 						<input id="cancel" type="button" value="Cancelar" class="btn btn-secondary">
 						<input id="join" type="button" value="Conectar" class="btn btn-primary">

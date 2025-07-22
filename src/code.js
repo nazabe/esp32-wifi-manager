@@ -130,15 +130,42 @@ docReady(async function () {
 
   gel("manual_cancel").addEventListener("click", cancel, false);
 
-  gel("join").addEventListener("click", performConnect, false);
+gel("join").addEventListener("click", () => {
+    const errorContainer = gel("connect-error");
+    errorContainer.style.display = "none";
 
-  gel("manual_join").addEventListener(
-    "click",
-    (e) => {
-      performConnect("manual");
-    },
-    false
-  );
+    const password = gel("pwd").value;
+
+    if (password.length < 8) {
+        errorContainer.textContent = "La contraseña debe tener al menos 8 caracteres.";
+        errorContainer.style.display = "block";
+        return;
+    }
+
+    performConnect();
+});
+
+  gel("manual_join").addEventListener("click", (e) => {
+    const errorContainer = gel("manual-connect-error");
+    errorContainer.style.display = "none";
+
+    const ssid = gel("manual_ssid").value.trim();
+    const password = gel("manual_pwd").value;
+
+    if (ssid === "") {
+      errorContainer.textContent = "Por favor, introduce el nombre de la red.";
+      errorContainer.style.display = "block";
+      return;
+    }
+
+    if (password.length < 8) {
+      errorContainer.textContent = "La contraseña debe tener al menos 8 caracteres.";
+      errorContainer.style.display = "block";
+      return;
+    }
+
+    performConnect("manual");
+  });
 
   // Configurar los toggles de contraseña
   setupPasswordToggle('toggle_pwd', 'pwd');
@@ -246,35 +273,35 @@ function rssiToIcon(rssi) {
 }
 
 async function refreshAP(url = "ap.json") {
-    const wifiListSection = gel("wifi-list");
-    const noNetworksSection = gel("no-networks-found");
+  const wifiListSection = gel("wifi-list");
+  const noNetworksSection = gel("no-networks-found");
 
-    try {
-        const res = await fetch(url);
-        const access_points = await res.json();
+  try {
+    const res = await fetch(url);
+    const access_points = await res.json();
 
-        // Si se encuentran redes, muéstralas
-        if (access_points && access_points.length > 0) {
-            wifiListSection.style.display = 'block';
-            noNetworksSection.style.display = 'none';
-            
-            access_points.sort((a, b) => {
-                const x = a["rssi"];
-                const y = b["rssi"];
-                return x < y ? 1 : x > y ? -1 : 0;
-            });
-            refreshAPHTML(access_points);
-        } else {
-            // Si no se encuentran redes, muestra el mensaje de error
-            wifiListSection.style.display = 'none';
-            noNetworksSection.style.display = 'block';
-        }
-    } catch (e) {
-        // Si hay un error en la comunicación, también muestra el mensaje
-        console.info("No se pudo obtener /ap.json o estaba vacío.", e);
-        wifiListSection.style.display = 'none';
-        noNetworksSection.style.display = 'block';
+    // Si se encuentran redes, muéstralas
+    if (access_points && access_points.length > 0) {
+      wifiListSection.style.display = 'block';
+      noNetworksSection.style.display = 'none';
+
+      access_points.sort((a, b) => {
+        const x = a["rssi"];
+        const y = b["rssi"];
+        return x < y ? 1 : x > y ? -1 : 0;
+      });
+      refreshAPHTML(access_points);
+    } else {
+      // Si no se encuentran redes, muestra el mensaje de error
+      wifiListSection.style.display = 'none';
+      noNetworksSection.style.display = 'block';
     }
+  } catch (e) {
+    // Si hay un error en la comunicación, también muestra el mensaje
+    console.info("No se pudo obtener /ap.json o estaba vacío.", e);
+    wifiListSection.style.display = 'none';
+    noNetworksSection.style.display = 'block';
+  }
 }
 
 function refreshAPHTML(data) {
